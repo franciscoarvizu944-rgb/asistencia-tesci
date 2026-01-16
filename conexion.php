@@ -1,14 +1,15 @@
 <?php
-// Sin espacios antes de esta etiqueta
-$host = "sql305.infinityfree.com"; 
-$user = "if0_40900198";            
-$pass = "3QBiO6kD1Pi";            
-$db   = "if0_40900198_asistencia"; 
+// Datos de conexión de Railway
+$host = "mysql.railway.internal"; 
+$user = "root";            
+$pass = "BwdNCiBYEWzVNbBnEWeVgDJZCUZXRyKW";            
+$db   = "railway";
+$port = "3306";
 
-$conexion = mysqli_connect($host, $user, $pass, $db);
+$conexion = mysqli_connect($host, $user, $pass, $db, $port);
 
 if (!$conexion) {
-    exit; 
+    die("Error de conexión");
 }
 
 mysqli_set_charset($conexion, "utf8");
