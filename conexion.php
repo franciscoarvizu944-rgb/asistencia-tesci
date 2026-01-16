@@ -1,17 +1,18 @@
 <?php
-// Configuración para conexión EXTERNA (Render -> Railway)
+// Datos de conexión EXTERNA (Render -> Railway)
 $host = "shortline.proxy.rlwy.net"; 
 $user = "root";            
 $pass = "BwdNCiBYEWzVNbBnEWeVgDJZCUZXRyKW";            
 $db   = "railway";
-$port = 52104; // Usar como número, no como texto
+$port = 52104; // Puerto público de tu imagen f83821.png
 
-// Intentar conexión con el puerto específico
+// Forzar la conexión con el puerto
 $conexion = mysqli_connect($host, $user, $pass, $db, $port);
 
 if (!$conexion) {
-    // Esto enviará el error técnico real a la pantalla para saber qué pasa
-    die("Fallo crítico de conexión: " . mysqli_connect_error());
+    // Esto nos dirá el error real en los registros de Render
+    error_log("Fallo de conexión MySQL: " . mysqli_connect_error());
+    die("Error de conexión");
 }
 
 mysqli_set_charset($conexion, "utf8");
