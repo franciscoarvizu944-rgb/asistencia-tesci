@@ -45,11 +45,12 @@
         function toggleForm() {
             const login = document.getElementById('loginForm');
             const register = document.getElementById('registerForm');
-            login.style.display = login.style.display === 'none' ? 'block' : 'none';
-            register.style.display = register.style.display === 'none' ? 'block' : 'none';
+            login.style.display = (login.style.display === 'none') ? 'block' : 'none';
+            register.style.display = (register.style.display === 'none') ? 'block' : 'none';
+            document.getElementById('mensaje').innerText = "";
         }
 
-        // URL CORREGIDA: Apuntando a la raíz de Render donde están tus archivos
+        // URL definitiva según tus pruebas de acceso directo
         const API_URL = 'https://asistencia-tesci.onrender.com/';
 
         async function login() {
@@ -73,6 +74,7 @@
 
         async function registrar() {
             const fd = new FormData();
+            // Nombres de campos ajustados para el nuevo registro_alumno.php
             fd.append('nombre', document.getElementById('regNombre').value);
             fd.append('apellidos', document.getElementById('regApellidos').value);
             fd.append('numero_control', document.getElementById('regControl').value);
@@ -83,13 +85,14 @@
                 const res = await fetch(API_URL + 'registro_alumno.php', { method: 'POST', body: fd });
                 const data = await res.json();
                 if(data.status === 'ok') {
-                    alert("¡Registro exitoso! Ahora inicia sesión.");
+                    alert("¡Registro exitoso! Ya puedes iniciar sesión.");
                     toggleForm();
                 } else {
+                    // Muestra el error técnico si algo falla en Railway
                     document.getElementById('mensaje').innerText = data.message;
                 }
             } catch (e) {
-                document.getElementById('mensaje').innerText = "Error al conectar con la base de datos.";
+                document.getElementById('mensaje').innerText = "El servidor no respondió. Revisa los logs de Render.";
             }
         }
     </script>
