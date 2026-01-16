@@ -1,18 +1,18 @@
 <?php
-// Datos de conexión EXTERNA (Render -> Railway)
+// Datos de Railway (Dominio Público)
 $host = "shortline.proxy.rlwy.net"; 
 $user = "root";            
 $pass = "BwdNCiBYEWzVNbBnEWeVgDJZCUZXRyKW";            
 $db   = "railway";
-$port = 52104; // Puerto público de tu imagen f83821.png
+$port = 52104; 
 
-// Forzar la conexión con el puerto
+// Intentar la conexión
 $conexion = mysqli_connect($host, $user, $pass, $db, $port);
 
 if (!$conexion) {
-    // Esto nos dirá el error real en los registros de Render
-    error_log("Fallo de conexión MySQL: " . mysqli_connect_error());
-    die("Error de conexión");
+    header('Content-Type: application/json');
+    die(json_encode(["status" => "error", "message" => "Error de conexión: " . mysqli_connect_error()]));
 }
 
 mysqli_set_charset($conexion, "utf8");
+?>
