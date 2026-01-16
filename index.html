@@ -29,7 +29,8 @@
         <div id="registerForm" style="display:none;">
             <input type="text" id="regNombre" class="form-control" placeholder="Nombre(s)">
             <input type="text" id="regApellidos" class="form-control" placeholder="Apellidos">
-            <input type="email" id="regEmail" class="form-control" placeholder="Número de Control @cuautitlan.tecnm.mx">
+            <input type="text" id="regControl" class="form-control" placeholder="Número de Control">
+            <input type="email" id="regEmail" class="form-control" placeholder="Correo @cuautitlan.tecnm.mx">
             <input type="password" id="regPassword" class="form-control" placeholder="Contraseña">
             <button class="btn btn-success w-100 p-2 mb-3" style="border-radius:12px;" onclick="registrar()">Crear Cuenta</button>
             <p class="text-muted" onclick="toggleForm()" style="cursor:pointer;">Volver al Inicio</p>
@@ -48,8 +49,8 @@
             register.style.display = register.style.display === 'none' ? 'block' : 'none';
         }
 
-        // URL absoluta para evitar errores de ruta en InfinityFree
-        const API_URL = 'http://asistencia-escolar-2026.infinityfreeapp.com/api/';
+        // NUEVA URL: Apuntando a tu servidor en Render que conecta con Railway
+        const API_URL = 'https://asistencia-tesci.onrender.com/api/';
 
         async function login() {
             const fd = new FormData();
@@ -74,6 +75,7 @@
             const fd = new FormData();
             fd.append('nombre', document.getElementById('regNombre').value);
             fd.append('apellidos', document.getElementById('regApellidos').value);
+            fd.append('numero_control', document.getElementById('regControl').value);
             fd.append('email', document.getElementById('regEmail').value);
             fd.append('password', document.getElementById('regPassword').value);
 
