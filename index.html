@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TESCI Alumnos</title>
-    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         body { background-color: #f0f2f5; font-family: sans-serif; }
         .app-card { max-width: 400px; margin: 40px auto; padding: 30px; background: white; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .btn-tesci { background-color: #3f51b5; color: white; border-radius: 12px; padding: 12px; font-weight: bold; width: 100%; border: none; }
-        .btn-tesci:hover { background-color: #303f9f; }
         .form-control { border-radius: 12px; padding: 12px; margin-bottom: 15px; }
         .text-indigo { color: #3f51b5; cursor: pointer; font-weight: bold; }
     </style>
@@ -30,7 +28,7 @@
             <input type="text" id="regNombre" class="form-control" placeholder="Nombre(s)">
             <input type="text" id="regApellidos" class="form-control" placeholder="Apellidos">
             <input type="text" id="regControl" class="form-control" placeholder="Número de Control">
-            <input type="email" id="regEmail" class="form-control" placeholder="Correo @cuautitlan.tecnm.mx">
+            <input type="email" id="regEmail" class="form-control" placeholder="Correo Institucional">
             <input type="password" id="regPassword" class="form-control" placeholder="Contraseña">
             <button class="btn btn-success w-100 p-2 mb-3" style="border-radius:12px;" onclick="registrar()">Crear Cuenta</button>
             <p class="text-muted" onclick="toggleForm()" style="cursor:pointer;">Volver al Inicio</p>
@@ -40,19 +38,16 @@
     </div>
 
     <script>
-        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
-
         function toggleForm() {
             const login = document.getElementById('loginForm');
             const register = document.getElementById('registerForm');
-            login.style.display = (login.style.display === 'none') ? 'block' : 'none';
-            register.style.display = (register.style.display === 'none') ? 'block' : 'none';
+            login.style.display = login.style.display === 'none' ? 'block' : 'none';
+            register.style.display = register.style.display === 'none' ? 'block' : 'none';
             document.getElementById('mensaje').innerText = "";
         }
 
-        // URL definitiva según tus pruebas de acceso directo
-        // URL corregida para archivos en la raíz
-const API_URL = 'https://asistencia-tesci.onrender.com/';
+        // URL apuntando directamente a la raíz de Render
+        const API_URL = 'https://asistencia-tesci.onrender.com/';
 
         async function login() {
             const fd = new FormData();
@@ -75,7 +70,6 @@ const API_URL = 'https://asistencia-tesci.onrender.com/';
 
         async function registrar() {
             const fd = new FormData();
-            // Nombres de campos ajustados para el nuevo registro_alumno.php
             fd.append('nombre', document.getElementById('regNombre').value);
             fd.append('apellidos', document.getElementById('regApellidos').value);
             fd.append('numero_control', document.getElementById('regControl').value);
@@ -83,17 +77,21 @@ const API_URL = 'https://asistencia-tesci.onrender.com/';
             fd.append('password', document.getElementById('regPassword').value);
 
             try {
-                const res = await fetch(API_URL + 'registro_alumno.php', { method: 'POST', body: fd });
+                // Forzamos que la petición no use caché para evitar el error anterior
+                const res = await fetch(API_URL + 'registro_alumno.php', { 
+                    method: 'POST', 
+                    body: fd,
+                    cache: 'no-cache' 
+                });
                 const data = await res.json();
                 if(data.status === 'ok') {
                     alert("¡Registro exitoso! Ya puedes iniciar sesión.");
                     toggleForm();
                 } else {
-                    // Muestra el error técnico si algo falla en Railway
                     document.getElementById('mensaje').innerText = data.message;
                 }
             } catch (e) {
-                document.getElementById('mensaje').innerText = "El servidor no respondió. Revisa los logs de Render.";
+                document.getElementById('mensaje').innerText = "El servidor aún no responde. Intenta de nuevo en 10 segundos.";
             }
         }
     </script>
